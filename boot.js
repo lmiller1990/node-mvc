@@ -6,4 +6,8 @@ require("./extensions/Array.js")
 
 const server = http.createServer(router)
 
-server.listen(8000)
+if (!module.parent) {
+  server.listen(8000)
+}
+
+module.exports = server
