@@ -4,10 +4,15 @@ const router = require("./router.js")
 require("./extensions/String.js")
 require("./extensions/Array.js")
 
-const server = http.createServer(router)
-
-if (!module.parent) {
-  server.listen(8000)
+function boot(routes) {
+  return http.createServer((req, res) => {
+    router(req, res, routes)
+  })
 }
 
-module.exports = server
+if (!module.parent) {
+  const routes = require("./routes")
+  boot(routes).listen(8000)
+}
+
+module.exports = boot

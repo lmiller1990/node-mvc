@@ -1,6 +1,4 @@
-const routes = require("./routes.js")
-
-module.exports = (req, res) => {
+module.exports = (req, res, routes) => {
   const path = req.url.split("/").removeNulls()
   const controller = path.secondLast()
   const action = path.last() === controller
@@ -17,4 +15,3 @@ module.exports = (req, res) => {
     res.end("404 - Page not found")
   }
 }
-
