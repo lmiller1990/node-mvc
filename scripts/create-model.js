@@ -4,7 +4,13 @@ const config = require("../db/config.js")
 const env = process.env.NODE_ENV || "development"
 const modelName = process.argv[1]
 
-exec(`psql -d test_db -c "CREATE TABLE IF NOT EXISTS ${modelName}();"`, 
+const query = `
+  CREATE TABLE IF NOT EXISTS ${modelName}(
+    id SERIAL
+  );
+`
+
+exec(`psql -d test_db -c "${query}"`,
   (err, stdout, stderr) => {
     if (err) console.log(err)
 
