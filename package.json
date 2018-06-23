@@ -1,5 +1,13 @@
 {
   "devDependencies": {
     "jest": "^23.1.0"
-  }
+  },
+  "scripts": {
+    "create:model": "node -e 'require(\"./scripts/create-model.js\")'",
+    "destroy:model": "node -e 'require(\"./scripts/destroy-model.js\")'"
+  },
+  "jest": {
+    "setupFiles": ["<rootDir>./jest.init.js"]
+  },
+  "license": "MIT"
 }
