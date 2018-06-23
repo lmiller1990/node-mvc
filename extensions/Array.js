@@ -9,6 +9,13 @@ Array.prototype.secondLast = function() {
     return this[this.length-1]
 }
 
+Array.prototype.thirdLast = function() {
+  if (this.length > 2) 
+    return this[this.length-3]
+  else
+    return this[this.length-1]
+}
+
 Array.prototype.removeNulls = function() {
   const arr = []
   for (let i = 0; i < this.length; i++) {

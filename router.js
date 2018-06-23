@@ -1,9 +1,31 @@
 module.exports = (req, res, routes) => {
   const path = req.url.split("/").removeNulls()
-  const controller = path.secondLast()
-  const action = path.last() === controller
-    ? req.method === "GET" ? "index" : "create"
-    : path.last()
+  const controller = path.last() === "edit" ? path.thirdLast() : path.secondLast()
+  let action = ""
+
+  if (req.method === "GET") {
+    if (path.last() === controller) {
+      action = "index"
+    } else if (path.last() === "edit") {
+      action = "edit"
+    } else if (path.last() === "new") {
+      action = path.last()
+    } else {
+      action = "show"
+    }
+  }
+
+  if (req.method === "POST") {
+    if (path.last() === controller) {
+      action = "create"
+    } else {
+      action = path.last()
+    }
+  }
+
+  if (req.method === "PUT") {
+    action = "update"
+  }
 
   const klass = controller.capitalize() + "Controller"
 

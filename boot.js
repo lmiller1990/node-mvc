@@ -11,6 +11,7 @@ function boot(routes) {
 }
 
 if (!module.parent) {
+  console.log("Listening on port 8000")
   const routes = require("./routes")
   boot(routes).listen(8000)
 }
