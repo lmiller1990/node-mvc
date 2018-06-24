@@ -1,17 +1,18 @@
 const exec = require("child_process").exec
+const fs = require("fs")
 const config = require("../db/config.js")
 
 const env = process.env.NODE_ENV || "development"
 const modelName = process.argv[1]
 
-exec(`psql -d test_db -c "DROP TABLE IF EXISTS ${modelName};"`, 
-  (err, stdout, stderr) => {
-    if (err) console.log(err)
+const query = `DROP TABLE IF EXISTS ${modelName}`
 
-    if (stderr && stderr.includes("does not exist")) {
-      console.log(`${modelName} does not exist. Skipping.`)
-    } else if (stdout && stdout.includes("DROP TABLE")) {
-      console.log(`Dropped ${modelName}.`)
-    }
-  })
+const timestamp = new Date().getTime()
 
+try {
+  const migrationName = `${timestamp}_destroy_${modelName}`
+  fs.writeFileSync(`./db/migrations/${migrationName}.sql`, query.trim())
+  console.log(`Created migration "db/migrations/${migrationName}.`)
+} catch (e) {
+  console.log("Error generating migration: ", e)
+}

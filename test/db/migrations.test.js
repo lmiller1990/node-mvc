@@ -1,72 +1,49 @@
 const exec = require("child_process").exec
 const {
   createIfDoesntExist,
-  dropIfExists
+  dropIfExists,
+  deleteAllMigrations
 } = require("./sql-utils.js")
 
 const testTable = "test_table"
 
 let i = 0
 describe("model migrations", () => {
-  beforeEach(() => dropIfExists(testTable))
-  afterAll(() => dropIfExists(testTable))
+  beforeEach(async () => {
+    await dropIfExists(testTable)
+    await deleteAllMigrations()
+  })
+  afterAll(async () => {
+    await dropIfExists(testTable)
+    await deleteAllMigrations()
+  })
 
   describe("model:create", () => {
-    context("the table does not exist", () => {
-      it("creates the table", (done) => {
-        exec(`yarn create:model ${testTable}`, 
-          (err, stdout, stderr) => {
-            if (err) console.log(err)
-            if (stderr) {}
+    it("creates the table and runs the migration", (done) => {
+      exec(`yarn create:model ${testTable}`, (_err, _stdout, _stderr) => {
+        exec(`yarn db:migrate`, (err, stdout, stderr) => {
+          if (err) console.log(err)
+          if (stderr) {}
 
-            expect(stdout.lastLine()).toBe(`Created ${testTable}.`)
-            done()
-          })
-      })
-    })
-
-    context("the table does exist", () => {
-      beforeEach(() => createIfDoesntExist(testTable))
-
-      it("prints a useful error message", (done) => {
-        exec(`yarn create:model ${testTable}`, 
-          (err, stdout, stderr) => {
-            if (err) console.log(err)
-            if (stderr) console.log(stderr)
-
-            expect(stdout.lastLine()).toBe(`${testTable} already exists. Skipping.`)
-            done()
-          })
+          expect(stdout.lastLine().includes("Executed migration")).toBe(true)
+          done()
+        })
       })
     })
   })
 
   describe("model:destroy", () => {
-    context("the table does exist", () => {
-      beforeEach(() => createIfDoesntExist(testTable))
+    beforeEach(() => createIfDoesntExist(testTable))
 
-      it("drops the table", (done) => {
-        exec(`yarn destroy:model ${testTable}`, 
-          (err, stdout, stderr) => {
-            if (err) console.log(err)
-            if (stderr) {}
+    it("drops the table", (done) => {
+      exec(`yarn destroy:model ${testTable}`, (_err, _stdout, _stderr) => {
+        exec(`yarn db:migrate`, (err, stdout, stderr) => {
+          if (err) console.log(err)
+          if (stderr) {}
 
-            expect(stdout.lastLine()).toBe(`Dropped ${testTable}.`)
-            done()
-          })
-      })
-    })
-
-    context("the table does not exist", () => {
-      it("prints a useful warning message", (done) => {
-        exec(`yarn destroy:model ${testTable}`, 
-          (err, stdout, stderr) => {
-            if (err) console.log(err)
-            if (stderr) {}
-
-            expect(stdout.lastLine()).toBe(`${testTable} does not exist. Skipping.`)
-            done()
-          })
+          expect(stdout.lastLine().includes("Executed migration")).toBe(true)
+          done()
+        })
       })
     })
   })

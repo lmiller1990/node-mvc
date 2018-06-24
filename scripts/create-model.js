@@ -1,4 +1,5 @@
 const exec = require("child_process").exec
+const fs = require("fs")
 const config = require("../db/config.js")
 
 const env = process.env.NODE_ENV || "development"
@@ -10,13 +11,12 @@ const query = `
   );
 `
 
-exec(`psql -d test_db -c "${query}"`,
-  (err, stdout, stderr) => {
-    if (err) console.log(err)
+const timestamp = new Date().getTime()
 
-    if (stderr && stderr.includes("already exists")) {
-      console.log(`${modelName} already exists. Skipping.`)
-    } else if (stdout && stdout.includes("CREATE TABLE")) {
-      console.log(`Created ${modelName}.`)
-    }
-  })
+try {
+  const migrationName = `${timestamp}_create_${modelName}`
+  fs.writeFileSync(`./db/migrations/${migrationName}.sql`, query.trim())
+  console.log(`Created migration "db/migrations/${migrationName}.`)
+} catch (e) {
+  console.log("Error generating migration: ", e)
+}

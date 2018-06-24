@@ -8,7 +8,8 @@
   },
   "scripts": {
     "create:model": "node -e 'require(\"./scripts/create-model.js\")'",
-    "destroy:model": "node -e 'require(\"./scripts/destroy-model.js\")'"
+    "destroy:model": "node -e 'require(\"./scripts/destroy-model.js\")'",
+    "db:migrate": "node -e 'require(\"./scripts/migrate.js\")'"
   },
   "jest": {
     "setupFiles": [
