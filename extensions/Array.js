@@ -26,3 +26,8 @@ Array.prototype.removeNulls = function() {
   return arr
 }
 
+Array.prototype.joinExceptLast = function(separator) {
+  return this.reduce((acc, currVal, currIdx) => {
+    return acc + currVal + (currIdx + 1 < this.length ? separator : "")
+  }, "")
+}
