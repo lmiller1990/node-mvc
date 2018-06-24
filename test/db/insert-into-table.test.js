@@ -8,16 +8,16 @@ const {
 const table = "test_table"
 
 describe("insertInto", () => {
-  beforeEach(async () => {
-    await dropIfExists(table)
-    await createIfDoesntExist(table)
-  })
   afterAll(() => dropIfExists(table))
 
   context("the table exists", () => {
     it("inserts a new row with values", async (done) => {
+      await dropIfExists(table)
+      await createIfDoesntExist(table)
+
       const result = await insertInto(table, { name: "test_name" })
-      expect(result).toBe(true)
+      // new table so first record will always be id = 1
+      expect(result).toEqual({ id: 1 })
 
       exec(`psql -d test_db -c "SELECT name FROM ${table};"`,
         (err, stdout, stderr) => {

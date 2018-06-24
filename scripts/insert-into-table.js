@@ -30,13 +30,19 @@ function insertInto(table, keysAndValues) {
       );
     `
 
+    const getIdQuery = `SELECT id FROM ${table}`
+
     exec(`psql -d test_db -c "${query}"`,
       (err, stdout, stderr) => {
         if (err) reject(err)
         if (stderr) console.log(stderr)
 
         if (env !== "test") console.log(`Inserted ${values} into ${table}.`)
-        resolve(true)
+        exec(`psql -d test_db -c "${getIdQuery}"`,
+          (err, stdout, stderr) => {
+            const id = parseInt(stdout.split("\n").removeNulls()[2])
+            resolve({ id })
+          })
       })
   })
 }

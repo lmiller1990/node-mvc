@@ -16,7 +16,15 @@ class BaseEntity {
   }
 
   static create(attrs) {
-    return insertInto(this.name.toLowerCase(), attrs)
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { id } = await insertInto(this.name.toLowerCase(), attrs)
+        resolve(new this({...attrs, id }))
+      } catch (e) {
+        console.log("Error occurred: ", e)
+        reject(e)
+      }
+    })
   }
 }
 
