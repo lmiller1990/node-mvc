@@ -1,13 +1,19 @@
 {
+  "name": "node-mvc",
   "devDependencies": {
     "jest": "^23.1.0"
+  },
+  "bin": {
+    "node-mvc": "boot.js"
   },
   "scripts": {
     "create:model": "node -e 'require(\"./scripts/create-model.js\")'",
     "destroy:model": "node -e 'require(\"./scripts/destroy-model.js\")'"
   },
   "jest": {
-    "setupFiles": ["<rootDir>./jest.init.js"]
+    "setupFiles": [
+      "<rootDir>./jest.init.js"
+    ]
   },
   "license": "MIT"
 }

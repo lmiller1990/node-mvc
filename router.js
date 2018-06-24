@@ -1,10 +1,13 @@
 module.exports = (req, res, routes) => {
   const path = req.url.split("/").removeNulls()
-  const controller = path.last() === "edit" ? path.thirdLast() : path.secondLast()
+  let controller = path.last() === "edit" ? path.thirdLast() : path.secondLast()
   let action = ""
-
+  
   if (req.method === "GET") {
-    if (path.last() === controller) {
+    if (path.length === 0) {
+      controller = "application"
+      action = "index"
+    } else if (path.last() === controller) {
       action = "index"
     } else if (path.last() === "edit") {
       action = "edit"
