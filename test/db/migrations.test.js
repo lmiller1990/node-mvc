@@ -5,6 +5,8 @@ const {
   deleteAllMigrations
 } = require("./sql-utils.js")
 
+const { deleteAllModels } = require("../cleanup-utils.js")
+
 const testTable = "test_table"
 
 let i = 0
@@ -16,6 +18,7 @@ describe("model migrations", () => {
   afterAll(async () => {
     await dropIfExists(testTable)
     await deleteAllMigrations()
+    await deleteAllModels()
   })
 
   describe("model:create", () => {
