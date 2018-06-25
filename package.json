@@ -20,5 +20,10 @@
   "license": "MIT",
   "dependencies": {
     "lodash": "^4.17.10"
+  },
+  "homepage": "https://github.com/lmiller1990/node-mvc",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lmiller1990/node-mvc.git"
   }
 }
