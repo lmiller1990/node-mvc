@@ -6,6 +6,7 @@ class UsersController extends BaseController {
   }
 
   index(req, res) {
+    res.writeHead(200)
     res.end("users#index")
   }
 
