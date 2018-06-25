@@ -12,6 +12,23 @@ The Node.js MVC framework you never had but always deserved.
 - Lots of convinient methods for `String`, `Array` etc.
 
 
+### Installation
+
+```bash
+yarn global add @lmiller1990/node-mvc
+```
+
+### Directory
+
+There is no command to create a project yet. You should set up your directory like this:
+
+```
+- models
+- db
+  - migrations
+- controllers
+```
+
 ## Examples 
 
 The following snippets are of features that are already implemented in master.
@@ -51,7 +68,7 @@ So far this is only supported wit postgres.
 
 ### Creating an object and persisting to database
 
-Once you created your model, you can interact with it like this.
+Once you created your model, you can interact with it like this (for example, in a controller):
 
 ```js
 const BaseEntity = require("./models/base-entity.js")
